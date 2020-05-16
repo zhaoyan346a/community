@@ -19,6 +19,15 @@ spring:
       maximum-pool-size: 15
       minimum-idle: 5
       idle-timeout: 30000
+  # MailProperties
+  mail:
+    host: smtp.sina.com
+    port: 465  # 一般都是465
+    username: zhaoyan346a@sina.com
+    password: 6afaa8d90f129281    # 注意：password是授权密码，不是邮箱账户的密码
+    protocol: smtps  # 加密的smtp
+    properties:
+      mail.smtp.ssl.enable: true  # 使用安全连接
 
 # Mybatis
 mybatis:
@@ -35,3 +44,10 @@ mybatis:
 #    com.nowcoder.community: debug
 #  file:
 #    name: F:\javaweb\projectSpace\test.log
+
+# community
+community:
+  path:
+    domain: http://localhost:8080
+    uploadPath: F:/javaweb/projectSpace/images
+  #community.path.uploadPath=F:/javaweb/projectSpace/images

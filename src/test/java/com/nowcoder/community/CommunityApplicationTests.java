@@ -1,7 +1,7 @@
 package com.nowcoder.community;
 
-import com.nowcoder.community.dao.TestDao;
-import com.nowcoder.community.service.TestService;
+import com.nowcoder.community.dao.AlphaDao;
+import com.nowcoder.community.service.AlphaService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +28,16 @@ class CommunityApplicationTests implements ApplicationContextAware {
     @Test
     public void testApplicationContext() {
         System.out.println(applicationContext);
-        TestDao dao = applicationContext.getBean(TestDao.class);
+        AlphaDao dao = applicationContext.getBean(AlphaDao.class);
         System.out.println(dao.select());
 
-        dao = applicationContext.getBean("hibernateDao", TestDao.class);
+        dao = applicationContext.getBean("hibernateDao", AlphaDao.class);
         System.out.println(dao.select());
     }
 
     @Test
     public void testBeanManagement() {
-        TestService service = applicationContext.getBean(TestService.class);
+        AlphaService service = applicationContext.getBean(AlphaService.class);
         System.out.println(service);
     }
 
@@ -49,10 +49,10 @@ class CommunityApplicationTests implements ApplicationContextAware {
 
     @Autowired //注入需要的bean
     @Qualifier("hibernateDao") //如果该类型的bean有多个实现类，用@Qualifier注解指定要注入的bean
-    private TestDao testDao;
+    private AlphaDao testDao;
 
     @Autowired
-    private TestService testService;
+    private AlphaService testService;
 
     @Autowired
     private SimpleDateFormat simpleDateFormat;
