@@ -32,7 +32,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private LoginRequiredInterceptor loginRequiredInterceptor;
 
-    //添加拦截器
+    /*
+    添加拦截器，拦截器的执行顺序与添加拦截器的顺序是相同的
+    alphaInterceptor --> loginTicketInterceptor --> loginRequiredInterceptor
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(alphaInterceptor)

@@ -89,7 +89,17 @@
                     <h5 class="mt-0 text-warning">
                         <!-- 用户名字 -->
                         <span th:utext="${user.username}">nowcoder</span>
-                        <button type="button" class="btn btn-info btn-sm float-right mr-5 follow-btn">关注TA</button>
+                        <!-- 存放userid -->
+                        <input type="hidden" th:value="${user.id}"/>
+                        <!-- 1、没登录或者登陆用户访问自己主页，不显示“关注TA”按钮
+                             2、hasFollowed是关注状态，根据hasFollowed显示内容
+                             3、class为btn-info时是“关注TA”状态，btn-secondary是“已关注”状态 -->
+                        <button type="button"
+                                th:class="|btn ${hasFollowed?'btn-secondary':'btn-info'} btn-sm float-right mr-5 follow-btn|"
+                                th:text="${hasFollowed?'已关注':'关注TA'}"
+                                th:if="${loginUser!=null&&loginUser.id!=user.id}">
+                            关注TA
+                        </button>
                     </h5>
                     <div class="text-muted mt-3">
                         <span>注册于
@@ -100,9 +110,22 @@
                             </i>
                         </span>
                     </div>
+                    <!-- 关注、粉丝、赞数-->
                     <div class="text-muted mt-3 mb-5">
-                        <span>关注了 <a class="text-primary" href="followee.html">5</a> 人</span>
-                        <span class="ml-4">关注者 <a class="text-primary" href="follower.html">123</a> 人</span>
+                        <span>关注了
+                            <!-- 正在关注的人的数量 -->
+                            <a class="text-primary" href="followee.html"
+                               th:text="${followCount}">
+                                5
+                            </a> 人
+                        </span>
+                        <span class="ml-4">关注者
+                            <!-- 粉丝数量 -->
+                            <a class="text-primary" href="follower.html"
+                               th:text="${followerCount}">
+                                123
+                            </a> 人
+                        </span>
                         <span class="ml-4">获得了
                             <!-- 用户被赞数量 -->
                             <i class="text-danger" th:text="${likeCount}">
