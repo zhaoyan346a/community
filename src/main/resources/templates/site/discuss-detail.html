@@ -85,19 +85,34 @@
                          class="align-self-start mr-4 rounded-circle user-header" alt="用户头像">
                 </a>
                 <div class="media-body">
+                    <!-- 帖子作者 -->
                     <div class="mt-0 text-warning" th:utext="${user.username}">寒江雪</div>
                     <div class="text-muted mt-3">
+                        <!-- 发帖时间 -->
                         发布于 <b th:text="${#dates.format(post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
                         <ul class="d-inline float-right">
-                            <li class="d-inline ml-2"><a href="#" class="text-primary">赞 11</a></li>
+                            <!-- 帖子点赞数量 -->
+                            <li class="d-inline ml-2">
+                                <!-- <a href="javascript:;" onclick="" 表示超链接没作用了，起作用的是onclick
+                                     里的单击事件
+                                     this,entityType,entityId -->
+                                <!-- 帖子点赞 -->
+                                <a href="javascript:;" th:onclick="|like(this,1,${post.id});|" class="text-primary">
+                                    <!-- 帖子的点赞状态 -->
+                                    <b th:text="${likeStatus==1?'已赞':'赞'}">赞</b>
+                                    <!-- 帖子的点赞数量 -->
+                                    <i th:text="${likeCount}">11</i>
+                                </a>
+                            </li>
                             <li class="d-inline ml-2">|</li>
                             <li class="d-inline ml-2"><a href="#replyform" class="text-primary">
+                                <!-- 帖子评论数量 -->
                                 回帖 <i th:text="${post.commentCount}">7</i></a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <!-- 正文 -->
+            <!-- 帖子正文 -->
             <div class="mt-4 mb-3 content" th:utext="${post.content}">
                 金三银四的金三已经到了，你还沉浸在过年的喜悦中吗？
                 如果是，那我要让你清醒一下了：目前大部分公司已经开启了内推，正式网申也将在3月份陆续开始，金三银四，春招的求职黄金时期已经来啦！！！
@@ -148,7 +163,16 @@
                                 </b>
                             </span>
                             <ul class="d-inline float-right">
-                                <li class="d-inline ml-2"><a href="#" class="text-primary">赞(1)</a></li>
+                                <li class="d-inline ml-2">
+                                    <!-- 帖子评论点赞 -->
+                                    <a href="javascript:;" th:onclick="|like(this,2,${cvo.comment.id});|"
+                                       class="text-primary">
+                                        <!-- 帖子评论的点赞状态 （对于该用户而言）-->
+                                        <b th:text="${cvo.likeStatus==1?'已赞':'赞'}">赞</b>
+                                        <!-- 帖子评论的点赞数 -->
+                                        (<i th:text="${cvo.likeCount}">1</i>)
+                                    </a>
+                                </li>
                                 <li class="d-inline ml-2">|</li>
                                 <li class="d-inline ml-2">
                                     <!--该评论的回复数量-->
@@ -176,7 +200,18 @@
                                     <!--回复时间-->
                                     <span th:text="${#dates.format(rvo.reply.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</span>
                                     <ul class="d-inline float-right">
-                                        <li class="d-inline ml-2"><a href="#" class="text-primary">赞(1)</a></li>
+                                        <li class="d-inline ml-2">
+                                            <!-- like(this,2,id)  2表示回复给评论；1表示回复给帖子  也就是entityType;
+                                                id 就是entityId -->
+                                            <!-- 回复点赞 -->
+                                            <a href="javascript:;" th:onclick="|like(this,2,${rvo.reply.id});|"
+                                               class="text-primary">
+                                                <!-- 给评论回复的点赞状态 -->
+                                                <b th:text="${rvo.likeStatus==1?'已赞':'赞'}">赞</b>
+                                                <!-- 给评论回复的点赞数 -->
+                                                (<i th:text="${rvo.likeCount}">1</i>)
+                                            </a>
+                                        </li>
                                         <li class="d-inline ml-2">|</li>
                                         <li class="d-inline ml-2">
                                             <!-- 点击这里会显示或收起下面的表单 -->
@@ -318,5 +353,6 @@
         crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
 <script th:src="@{/js/global.js}"></script>
+<script th:src="@{/js/discuss.js}"></script>
 </body>
 </html>

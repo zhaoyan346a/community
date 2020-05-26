@@ -28,6 +28,11 @@ spring:
     protocol: smtps  # 加密的smtp
     properties:
       mail.smtp.ssl.enable: true  # 使用安全连接
+  # RedisProperties.class
+  redis:
+    host: localhost # redis服务器的ip地址
+    port: 6379 # 端口
+    database: 11 # 用11号数据库
 
 # Mybatis
 mybatis:
@@ -51,4 +56,5 @@ community:
     domain: http://localhost:8080
     uploadPath: F:/javaweb/projectSpace/images
   #community.path.uploadPath=F:/javaweb/projectSpace/images
+
 
