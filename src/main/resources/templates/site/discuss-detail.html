@@ -80,12 +80,14 @@
             </h6>
             <!-- 作者 -->
             <div class="media pb-3 border-bottom">
-                <a href="profile.html">
+                <!-- 帖子作者的主页 -->
+                <a th:href="@{|/user/profile/${user.id}|}">
+                    <!-- 帖子作者的头像 -->
                     <img th:src="${user.headerUrl}"
                          class="align-self-start mr-4 rounded-circle user-header" alt="用户头像">
                 </a>
                 <div class="media-body">
-                    <!-- 帖子作者 -->
+                    <!-- 帖子作者名字 -->
                     <div class="mt-0 text-warning" th:utext="${user.username}">寒江雪</div>
                     <div class="text-muted mt-3">
                         <!-- 发帖时间 -->
@@ -95,9 +97,10 @@
                             <li class="d-inline ml-2">
                                 <!-- <a href="javascript:;" onclick="" 表示超链接没作用了，起作用的是onclick
                                      里的单击事件
-                                     this,entityType,entityId -->
+                                     this,entityType,entityId,entityUserId -->
                                 <!-- 帖子点赞 -->
-                                <a href="javascript:;" th:onclick="|like(this,1,${post.id});|" class="text-primary">
+                                <a href="javascript:;" th:onclick="|like(this,1,${post.id},${post.userId});|"
+                                   class="text-primary">
                                     <!-- 帖子的点赞状态 -->
                                     <b th:text="${likeStatus==1?'已赞':'赞'}">赞</b>
                                     <!-- 帖子的点赞数量 -->
@@ -137,7 +140,9 @@
             <ul class="list-unstyled mt-4">
                 <!-- 第1条回帖 -->
                 <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="cvo:${comments}">
-                    <a href="profile.html">
+                    <!-- 回帖人的主页 -->
+                    <a th:href="@{|/user/profile/${cvo.user.id}|}">
+                        <!-- 回帖人的头像 -->
                         <img th:src="${cvo.user.headerUrl}"
                              class="align-self-start mr-4 rounded-circle user-header" alt="用户头像">
                     </a>
@@ -165,7 +170,8 @@
                             <ul class="d-inline float-right">
                                 <li class="d-inline ml-2">
                                     <!-- 帖子评论点赞 -->
-                                    <a href="javascript:;" th:onclick="|like(this,2,${cvo.comment.id});|"
+                                    <a href="javascript:;"
+                                       th:onclick="|like(this,2,${cvo.comment.id},${cvo.comment.userId});|"
                                        class="text-primary">
                                         <!-- 帖子评论的点赞状态 （对于该用户而言）-->
                                         <b th:text="${cvo.likeStatus==1?'已赞':'赞'}">赞</b>
@@ -187,11 +193,17 @@
                                 <div>
                                     <!--回复作者的名字-->
                                     <span th:if="${rvo.target==null}">
-                                        <b class="text-info" th:utext="${rvo.user.username}">寒江雪</b>:&nbsp;&nbsp;
+                                        <a th:href="@{|/user/profile/${rvo.user.id}|}">
+                                            <b class="text-info" th:utext="${rvo.user.username}">寒江雪</b>:&nbsp;&nbsp;
+                                        </a>
                                     </span>
                                     <span th:if="${rvo.target!=null}">
-                                        <i class="text-info" th:utext="${rvo.user.username}">AAAA</i> 回复
-                                        <b class="text-info" th:utext="${rvo.target.username}">寒江雪</b>:&nbsp;&nbsp;
+                                        <a th:href="@{|/user/profile/${rvo.user.id}|}">
+                                            <i class="text-info" th:utext="${rvo.user.username}">AAAA</i>
+                                        </a> 回复
+                                        <a th:href="@{|/user/profile/${rvo.target.id}|}">
+                                            <b class="text-info" th:utext="${rvo.target.username}">寒江雪</b>:&nbsp;&nbsp;
+                                        </a>
                                     </span>
                                     <!--回复内容-->
                                     <span th:utext="${rvo.reply.content}">这个是直播时间哈，觉得晚的话可以直接看之前的完整录播的~</span>
@@ -204,7 +216,8 @@
                                             <!-- like(this,2,id)  2表示回复给评论；1表示回复给帖子  也就是entityType;
                                                 id 就是entityId -->
                                             <!-- 回复点赞 -->
-                                            <a href="javascript:;" th:onclick="|like(this,2,${rvo.reply.id});|"
+                                            <a href="javascript:;"
+                                               th:onclick="|like(this,2,${rvo.reply.id},${rvo.reply.userId});|"
                                                class="text-primary">
                                                 <!-- 给评论回复的点赞状态 -->
                                                 <b th:text="${rvo.likeStatus==1?'已赞':'赞'}">赞</b>

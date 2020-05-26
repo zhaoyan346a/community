@@ -77,7 +77,7 @@
                             <!-- 显示总共未读私信数量 -->
                             <span class="badge badge-danger"
                                   th:text="${letterUnreadCount}" th:if="${letterUnreadCount!=0}">3
-								</span>
+                            </span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -140,7 +140,8 @@
                 <li class="media pb-3 pt-3 mb-3 border-bottom position-relative" th:each="map:${conversations}">
                     <!-- 会话的未读信息数量 -->
                     <span class="badge badge-danger" th:text="${map.unreadCount}" th:if="${map.unreadCount!=0}">3</span>
-                    <a href="profile.html">
+                    <!-- 会话用户的主页 -->
+                    <a th:href="@{|/user/profile/${map.target.id}|}">
                         <!-- 会话用户的头像url -->
                         <img th:src="${map.target.headerUrl}" class="mr-4 rounded-circle user-header" alt="用户头像">
                     </a>

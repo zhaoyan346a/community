@@ -64,7 +64,7 @@ public class MessageController {
         int letterUnreadCount = messageService.findLetterUnreadCount(user.getId(), null);
         model.addAttribute("letterUnreadCount", letterUnreadCount);
 
-        return "/site/letter";
+        return "site/letter";
     }
 
     //会话的消息详情
@@ -102,7 +102,7 @@ public class MessageController {
             messageService.readMessage(ids);
         }
 
-        return "/site/letter-detail";
+        return "site/letter-detail";
     }
 
     //返回会话的另一个用户
