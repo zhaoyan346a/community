@@ -174,7 +174,8 @@
                     <!-- ${#numbers.sequence(page.from,page.to)} 生成[from,to]的数组 -->
                     <li th:class="|page-item ${page.current==i ? 'active' : ''}|"
                         th:each="i:${#numbers.sequence(page.from,page.to)}">
-                        <a class="page-link" href="#" th:text="${i}">1</a>
+                        <a class="page-link"
+                           th:href="@{${page.path}(current=${i})}" th:text="${i}">1</a>
                     </li>
                     <li th:class="|page-item  ${page.current==page.total ? 'disabled' : ''}|">
                         <a class="page-link" th:href="@{${page.path}(current=${page.current+1})}">下一页</a>

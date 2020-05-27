@@ -71,7 +71,7 @@
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
                         <!-- 该用户的正在关注列表url -->
-                        <a class="nav-link position-relative"
+                        <a class="nav-link position-relative active"
                            th:href="@{|/followes/${user.id}|}">
                             <!-- 该用户的名字 -->
                             <i class="text-info" th:utext="${user.username}">Nowcoder</i> 关注的人
@@ -79,7 +79,7 @@
                     </li>
                     <li class="nav-item">
                         <!-- 该用户的粉丝列表url -->
-                        <a class="nav-link position-relative active"
+                        <a class="nav-link position-relative"
                            th:href="@{|/followers/${user.id}|}">关注
                             <!-- 该用户的名字 -->
                             <i class="text-info" th:utext="${user.username}">Nowcoder</i> 的人
@@ -92,20 +92,20 @@
                 </a>
             </div>
 
-            <!-- 粉丝列表 -->
+            <!-- 关注列表 -->
             <ul class="list-unstyled">
-                <!-- users包含：user(粉丝)，followTime(关注时间)，hasFollowed(自己是否关注了该user) -->
+                <!-- users包含：user(正在关注的人)，followTime(关注时间)，hasFollowed(自己是否关注了该user) -->
                 <li class="media pb-3 pt-3 mb-3 border-bottom position-relative"
                     th:each="map:${users}">
-                    <!-- 粉丝的主页 -->
+                    <!-- 关注人的主页 -->
                     <a th:href="@{|/user/profile/${map.user.id}|}">
-                        <!-- 粉丝的头像 -->
+                        <!-- 关注人的头像 -->
                         <img th:src="${map.user.headerUrl}" class="mr-4 rounded-circle user-header"
                              alt="用户头像">
                     </a>
                     <div class="media-body">
                         <h6 class="mt-0 mb-3">
-                            <!-- 粉丝的名字 -->
+                            <!-- 关注人的名字 -->
                             <span class="text-success" th:utext="${map.user.username}">落基山脉下的闲人</span>
                             <span class="float-right text-muted font-size-12">关注于
                                 <!-- 关注时间 -->

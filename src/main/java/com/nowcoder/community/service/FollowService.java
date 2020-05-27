@@ -1,5 +1,7 @@
 package com.nowcoder.community.service;
 
+import com.nowcoder.community.entity.User;
+import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -8,11 +10,15 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+
 @Service
-public class FollowService {
+public class FollowService implements CommunityConstant {
 
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private UserService userService;
 
     /**
      * 关注
@@ -90,4 +96,55 @@ public class FollowService {
         return redisTemplate.opsForZSet().score(followKey, entityId) != null;
     }
 
+    // 查询某用户关注的人
+    public List<Map<String, Object>> findFollowes(int userId, int offset, int limit) {
+        return core(userId, offset, limit, true);
+    }
+
+    // 查询某用户的粉丝
+    public List<Map<String, Object>> findFollowers(int userId, int offset, int limit) {
+        return core(userId, offset, limit, false);
+    }
+
+    /**
+     * 查询正在关注/粉丝列表的方法
+     *
+     * @param userId
+     * @param offset
+     * @param limit
+     * @param follow true:查询正在关注；false:查询粉丝列表
+     * @return
+     */
+    private List<Map<String, Object>> core(int userId, int offset, int limit, boolean follow) {
+        String key = "";
+        if (follow)
+            //正在关注对应的key
+            key = RedisKeyUtil.getFollowKey(userId, ENTITY_TYPE_USER);
+        else
+            //粉丝列表对应的key
+            key = RedisKeyUtil.getFollowerKey(ENTITY_TYPE_USER, userId);
+        //虽然java里的Set是无序集合，但是redis的具体Set接口的实现类是有序集合的实现
+        // 没有 withscores，只返回了key，没有score
+        Set<Integer> targetIds = redisTemplate.opsForZSet().reverseRange(
+                key, offset, offset + limit - 1);
+
+        if (targetIds == null) {
+            return null;
+        }
+
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (Integer targetId : targetIds) {
+            Map<String, Object> map = new HashMap<>();
+            User user = userService.findUserById(targetId);
+            //添加用户
+            map.put("user", user);
+            //获取userId对应的分数
+            Double score = redisTemplate.opsForZSet().score(key, targetId);
+            //转换成日期
+            map.put("followTime", new Date(score.longValue()));
+            list.add(map);
+        }
+
+        return list;
+    }
 }
