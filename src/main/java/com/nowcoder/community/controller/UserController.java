@@ -33,17 +33,17 @@ public class UserController implements CommunityConstant {
     @Autowired
     private UserService userService;
     @Value("${community.path.domain}")
-    private String domain;
+    private String domain;//域名  http://localhost:8080
     @Value("${server.servlet.context-path}")
-    private String contextPath;
+    private String contextPath;//应用名称  /community
     @Value("${community.path.uploadPath}")
-    private String uploadPath;
+    private String uploadPath;//上传路径(用户头像) F:/javaweb/projectSpace/images
     @Autowired
-    private HostHolder hostHolder;
+    private HostHolder hostHolder;// ThreadLocal实现的 user持有器
     @Autowired
-    private LikeService likeService;
+    private LikeService likeService;//点赞
     @Autowired
-    private FollowService followService;
+    private FollowService followService;//关注
 
     //跳转到个人配置页面
     @LoginRequired

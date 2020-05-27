@@ -2,13 +2,14 @@ package com.nowcoder.community.entity;
 
 import java.util.Date;
 
+//登录凭证往redis里面插入，不往mysql里面插了
 public class LoginTicket {
 
     private int id;
-    private int userId;
-    private String ticket;
+    private int userId;//登录用户的id
+    private String ticket;//登录凭证
     private int status;//0-有效; 1-无效;
-    private Date expired;
+    private Date expired;//过期时间
 
     public int getId() {
         return id;

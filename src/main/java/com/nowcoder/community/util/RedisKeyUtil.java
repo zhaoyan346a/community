@@ -7,6 +7,9 @@ public class RedisKeyUtil {
     private static final String PREFIX_USER_LIKE = "like:user";//用户被赞的前缀
     private static final String PREFIX_FOLLOW = "follow";//正在关注实体的前缀
     private static final String PREFIX_FOLLOWER = "follower";//粉丝的前缀
+    private static final String PREFIX_KAPTCHA = "kaptcha";//验证码的前缀
+    private static final String PREFIX_TICKET = "ticket";//登录凭证的前缀
+    private static final String PREFIX_USER = "user";//登录用户的前缀
 
     /*
     某个实体的赞对应的key
@@ -37,11 +40,35 @@ public class RedisKeyUtil {
     }
 
     /*
-    某个实体拥有的粉丝对应的key
+    某个实体拥有的粉丝
     userId表示用户的id；now表示点了关注的时间
     follower:entityType:entityId -> zset(userId,now)
      */
     public static String getFollowerKey(int entityType, int entityId) {
         return PREFIX_FOLLOWER + SPLIT + entityType + SPLIT + entityId;
+    }
+
+    /*
+    验证码对应的key  owner表示验证码的唯一标识
+    kaptcha:sadasdajkfhjfk(唯一标识)
+     */
+    public static String getKaptchaKey(String owner) {
+        return PREFIX_KAPTCHA + SPLIT + owner;
+    }
+
+    /*
+    登录的凭证对应的key
+    ticket:登陆凭证字符串
+     */
+    public static String getTicketKey(String ticket) {
+        return PREFIX_TICKET + SPLIT + ticket;
+    }
+
+    /*
+    登录的用户对应的key
+    user:userId
+     */
+    public static String getUserKey(int userId) {
+        return PREFIX_USER + SPLIT + userId;
     }
 }

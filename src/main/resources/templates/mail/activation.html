@@ -6,15 +6,17 @@
     <title>牛客网-激活账号</title>
 </head>
 <body>
-	<div>
-		<p>
-			<b th:text="${email}">xxx@xxx.com</b>, 您好!
-		</p>
-		<p>
-			您正在注册牛客网, 这是一封激活邮件, 请点击 
-			<a th:href="@{${url}}">此链接</a>,
-			激活您的牛客账号!
-		</p>
-	</div>
+<div>
+    <p>
+        <!--用户邮箱 代表用户名了 -->
+        <b th:text="${email}">xxx@xxx.com</b>, 您好!
+    </p>
+    <p>
+        您正在注册牛客网, 这是一封激活邮件, 请点击
+        <!-- 激活邮件的链接 如：http://localhost:8080/community/activation/101/code -->
+        <a th:href="${url}">此链接</a>,
+        激活您的牛客账号!
+    </p>
+</div>
 </body>
 </html>

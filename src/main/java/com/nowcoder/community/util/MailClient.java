@@ -31,7 +31,7 @@ public class MailClient {
             helper.setFrom(from);
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(content, true);
+            helper.setText(content, true);//如果是网页就会被转成网页
             mailSender.send(helper.getMimeMessage());
         } catch (MessagingException e) {
             logger.error("发送邮件失败：" + e.getMessage());

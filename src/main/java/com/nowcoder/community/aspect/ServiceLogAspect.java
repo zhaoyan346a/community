@@ -1,6 +1,7 @@
 package com.nowcoder.community.aspect;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -25,8 +26,8 @@ public class ServiceLogAspect {
 
     }
 
-    @Before("pointcut()")
-    public void before(JoinPoint joinPoint) {
+    @After("pointcut()")
+    public void after(JoinPoint joinPoint) {
         // 用户[1.2.3.4],在[xxx],访问了[com.nowcoder.community.service.xxx()].
         // 1、在通知里获得request域对象
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

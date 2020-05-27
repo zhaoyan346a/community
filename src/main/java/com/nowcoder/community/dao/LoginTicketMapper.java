@@ -4,6 +4,7 @@ import com.nowcoder.community.entity.LoginTicket;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
+@Deprecated //不推荐使用了(登录凭证是添加到mysql中的，效率低)
 public interface LoginTicketMapper {
 
     @Insert({"insert into login_ticket(user_id,ticket,status,expired) ",
