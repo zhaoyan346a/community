@@ -34,6 +34,28 @@ spring:
     port: 6379 # 端口
     database: 11 # 用11号数据库
 
+  # KafkaProperties
+  # windows下对kafka的操作
+  # zookeeper的默认端口是2181，kafka的默认端口是9092
+  # 修改zookeeper.perpties(zookeeper的) : dataDir=F:\javaweb\projectSpace\data\zookeeper
+  # 修改server.properties(kafka的): log.dirs=F:\javaweb\projectSpace\data\kafka-logs
+  # 1、启动zookeeper : bin/windows/zookeeper-server-start.bat config/zookeeper.properties
+  # 2、启动kafka：bin/windows/kafka-server-start.bat config/server.properties
+  # 创建主题：创建有1个副本，1个分区的引导服务器为localhost:9092的名为test的主题
+  # kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test
+  # 查看指定服务器的所有主题：
+  # kafka-topics.bat --list --bootstrap-server localhost:9092
+  # 发送消息：
+  # kafka-console-producer.bat --broker-list localhost:9092 --topic test
+  # 接收消息：
+  # kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test --from-beginning
+  kafka:
+    bootstrap-servers: localhost:9092 #引导服务器列表
+    consumer:
+      group-id: community-consumer-group #消费者分组ID
+      enable-auto-commit: true #自动提交消费者偏移量
+      auto-commit-interval: 3000 #自动提交频率  3000ms(3s)
+
 # Mybatis
 mybatis:
   mapper-locations:
