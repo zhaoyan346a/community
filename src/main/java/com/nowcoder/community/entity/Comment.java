@@ -2,13 +2,14 @@ package com.nowcoder.community.entity;
 
 import java.util.Date;
 
+//评论
 public class Comment {
     private int id;
-    private int userId;
+    private int userId;//评论发起人id
     private int entityType;//1：回复给帖子 2：回复给评论
     private int entityId;// 实体id；例如：entityType=1 entityId=123 表示帖子的id是123
-    private int targetId;
-    private String content;
+    private int targetId;//评论给目标用户的id
+    private String content;//内容
     private int status;// 0：有效
     private Date createTime;
 

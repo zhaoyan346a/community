@@ -2,15 +2,16 @@ package com.nowcoder.community.entity;
 
 import java.util.Date;
 
+//私信的会话
 public class Message {
 
     private int id;
-    private int fromId;
-    private int toId;
-    private String conversationId;
-    private String content;
+    private int fromId;//发起人ID
+    private int toId;//接收人ID
+    private String conversationId;//会话ID
+    private String content;//内容
     private int status;//0-未读;1-已读;2-删除;
-    private Date createTime;
+    private Date createTime;//发送时间
 
     public int getId() {
         return id;

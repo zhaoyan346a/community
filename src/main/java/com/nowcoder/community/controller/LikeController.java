@@ -1,7 +1,10 @@
 package com.nowcoder.community.controller;
 
+import com.nowcoder.community.entity.Event;
 import com.nowcoder.community.entity.User;
+import com.nowcoder.community.event.EventProducer;
 import com.nowcoder.community.service.LikeService;
+import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +17,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class LikeController {
+public class LikeController implements CommunityConstant {
 
     @Autowired
     private LikeService likeService;
 
     @Autowired
     private HostHolder hostHolder;
+    @Autowired
+    private EventProducer eventProducer;
 
     @RequestMapping(path = "/like", method = RequestMethod.POST)
     @ResponseBody
-    public String like(int entityType, int entityId, int entityUserId) {
+    public String like(int entityType, int entityId, int entityUserId, int postId) {
         User user = hostHolder.getUser();
 
         // 点赞
@@ -32,12 +37,24 @@ public class LikeController {
 
         // 点赞数量
         long likeCount = likeService.findEntityLikeCount(entityType, entityId);
-        // 点赞状态
+        // 点赞状态  1：点赞了 0：没点赞 -1：点踩
         int likeStatus = likeService.findEntityLikeStatus(user.getId(), entityType, entityId);
         // 返回的结果
         Map<String, Object> map = new HashMap<>();
         map.put("likeCount", likeCount);
         map.put("likeStatus", likeStatus);
+
+        //触发点赞事件  只有点赞了才会通知
+        if (likeStatus == 1) {
+            Event event = new Event()
+                    .setTopic(TOPIC_LIKE) //设置点赞主题
+                    .setUserId(hostHolder.getUser().getId())//点赞事件发起人id
+                    .setEntityType(entityType)//实体类型
+                    .setEntityId(entityId)//实体id
+                    .setEntityUserId(entityUserId)//实体对应的用户id
+                    .setData("postId", postId);//查看帖子详情使用
+            eventProducer.fireEvent(event);
+        }
 
         return CommunityUtil.getJSONString(0, null, map);
     }

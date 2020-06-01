@@ -29,6 +29,9 @@ spring:
     properties:
       mail.smtp.ssl.enable: true  # 使用安全连接
   # RedisProperties.class
+  # windows启动redis: redis-server.exe redis.windows.conf
+  # 连接redis: redis-cli.exe -h localhost -p 6379
+  # 关闭redis: redis-cli -h 127.0.0.1 -p 6379 shutdown
   redis:
     host: localhost # redis服务器的ip地址
     port: 6379 # 端口

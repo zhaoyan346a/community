@@ -1,5 +1,9 @@
 package com.nowcoder.community.util;
+/*
+点赞：set
+关注：sorted set
 
+ */
 public class RedisKeyUtil {
 
     private static final String SPLIT = ":";//分隔符

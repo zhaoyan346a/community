@@ -1,5 +1,6 @@
 package com.nowcoder.community.aspect;
 
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -31,6 +32,9 @@ public class ServiceLogAspect {
         // 用户[1.2.3.4],在[xxx],访问了[com.nowcoder.community.service.xxx()].
         // 1、在通知里获得request域对象
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) { //由kafka调用service时是没有request的；为了简单就不记录日志了
+            return;
+        }
         HttpServletRequest request = attributes.getRequest();
         // 2、通过request获得ip
         String ip = request.getRemoteHost();
