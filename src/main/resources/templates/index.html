@@ -33,8 +33,9 @@
                         <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser!=null}">
                             <!-- 点击消息，出现私信列表 -->
                             <a class="nav-link position-relative" th:href="@{/letter/list}">消息
-                                <!-- 未读私信数 -->
-                                <span class="badge badge-danger">12</span></a>
+                                <!-- 未读消息总数（私信+通知） -->
+                                <span class="badge badge-danger"
+                                      th:text="${allUnreadCount!=0?allUnreadCount:''}">12</span></a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser==null}">
                             <a class="nav-link" th:href="@{/register}">注册</a>
@@ -49,7 +50,8 @@
                                      style="width:30px;"/>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}">个人主页</a>
+                                <a class="dropdown-item text-center"
+                                   th:href="@{|/user/profile/${loginUser.id}|}">个人主页</a>
                                 <a class="dropdown-item text-center" th:href="@{/user/setting}">账号设置</a>
                                 <a class="dropdown-item text-center" th:href="@{/logout}">退出登录</a>
                                 <div class="dropdown-divider"></div>
