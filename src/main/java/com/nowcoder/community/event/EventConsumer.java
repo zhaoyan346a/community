@@ -1,8 +1,11 @@
 package com.nowcoder.community.event;
 
 import com.alibaba.fastjson.JSONObject;
+import com.nowcoder.community.entity.DiscussPost;
 import com.nowcoder.community.entity.Event;
 import com.nowcoder.community.entity.Message;
+import com.nowcoder.community.service.DiscussPostService;
+import com.nowcoder.community.service.ElasticsearchService;
 import com.nowcoder.community.service.MessageService;
 import com.nowcoder.community.util.CommunityConstant;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -21,10 +24,14 @@ public class EventConsumer implements CommunityConstant {
     private static final Logger logger = LoggerFactory.getLogger(EventConsumer.class);
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private DiscussPostService discussPostService;
+    @Autowired
+    private ElasticsearchService elasticService;
 
-    //监听kafka的 点赞、关注、评论 主题
+    //监听kafka的 点赞、关注、评论,实现系统通知
     @KafkaListener(topics = {TOPIC_COMMENT, TOPIC_FOLLOW, TOPIC_LIKE})
-    public void handleMessage(ConsumerRecord record) {
+    public void handleNoticeMessage(ConsumerRecord record) {
         if (record == null || record.value() == null) {
             logger.error("消息的内容为空!");
             return;
@@ -58,5 +65,25 @@ public class EventConsumer implements CommunityConstant {
         //内容存储成json字符串形式
         message.setContent(JSONObject.toJSONString(contentMap));
         messageService.addMessage(message);
+    }
+
+    // 监听发帖、给帖子评论的事件；目的：插入到elasticsearch中，用于搜索
+    // 只是对帖子的搜索，不包括帖子中评论的搜索
+    // 监听给帖子评论是因为会改变 帖子的“commentCount”，所以需要修改elasticsearch中的post
+    @KafkaListener(topics = {TOPIC_PUBLISH})
+    public void handlePublishMessage(ConsumerRecord record) {
+        if (record == null || record.value() == null) {
+            logger.error("消息的内容为空!");
+            return;
+        }
+        //将发来的 json字符串转成 Event对象
+        Event event = JSONObject.parseObject(record.value().toString(), Event.class);
+        if (event == null) {
+            logger.error("消息格式错误!");
+            return;
+        }
+
+        DiscussPost post = discussPostService.findDiscussPostById(event.getEntityId());
+        elasticService.saveDiscussPost(post);//插入到elasticsearch中
     }
 }

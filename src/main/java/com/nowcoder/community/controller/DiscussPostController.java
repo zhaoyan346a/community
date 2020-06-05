@@ -1,9 +1,8 @@
 package com.nowcoder.community.controller;
 
-import com.nowcoder.community.entity.Comment;
-import com.nowcoder.community.entity.DiscussPost;
-import com.nowcoder.community.entity.Page;
-import com.nowcoder.community.entity.User;
+import com.nowcoder.community.annotation.LoginRequired;
+import com.nowcoder.community.entity.*;
+import com.nowcoder.community.event.EventProducer;
 import com.nowcoder.community.service.CommentService;
 import com.nowcoder.community.service.DiscussPostService;
 import com.nowcoder.community.service.LikeService;
@@ -34,10 +33,13 @@ public class DiscussPostController implements CommunityConstant {
     private CommentService commentService;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private EventProducer eventProducer;
 
     //添加讨论帖
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     @ResponseBody
+    @LoginRequired
     public String addDiscussPost(String title, String content) {
         User user = hostHolder.getUser();
         if (user == null) {
@@ -50,6 +52,14 @@ public class DiscussPostController implements CommunityConstant {
         post.setContent(content);
         post.setCreateTime(new Date());
         discussPostService.addDiscussPost(post);
+
+        //触发发帖事件
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)//发帖主题
+                .setUserId(user.getId())//登录用户发的帖子
+                .setEntityType(ENTITY_TYPE_POST)//实体类型
+                .setEntityId(post.getId());//实体id
+        eventProducer.fireEvent(event);
 
         //报错的情况，将来统一处理
         return CommunityUtil.getJSONString(0, "发布成功!");
