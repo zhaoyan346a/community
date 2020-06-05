@@ -58,6 +58,11 @@ spring:
       group-id: community-consumer-group #消费者分组ID
       enable-auto-commit: true #自动提交消费者偏移量
       auto-commit-interval: 3000 #自动提交频率  3000ms(3s)
+  # Elasticsearch.properties
+  data:
+    elasticsearch:
+      cluster-name: nowcoder # 集群名字
+      cluster-nodes: 127.0.0.1:9300 #集群的节点，多个节点用逗号分隔符。9200是http端口；9300是tcp端口
 
 # Mybatis
 mybatis:
