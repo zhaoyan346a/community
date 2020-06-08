@@ -98,7 +98,7 @@
                 <!-- commentNotice(map): message,user,entityType,entityId,postId,totalCount,unreadCount -->
                 <!-- commentNotice!=null时才显示 -->
                 <li class="media pb-3 pt-3 mb-3 border-bottom position-relative"
-                    th:if="${commentNotice!=null}">
+                    th:if="${commentNotice.message!=null}">
                     <!-- 评论类未读通知数量 -->
                     <span class="badge badge-danger"
                           th:text="${commentNotice.unreadCount != 0 ? commentNotice.unreadCount :''}">3</span>
@@ -136,7 +136,7 @@
                 <!-- likeNotice(map): message,user,entityType,entityId,postId,totalCount,unreadCount -->
                 <!-- likeNotice!=null时才显示 -->
                 <li class="media pb-3 pt-3 mb-3 border-bottom position-relative"
-                    th:if="${likeNotice!=null}">
+                    th:if="${likeNotice.message!=null}">
                     <!-- 点赞类未读通知数量 -->
                     <span class="badge badge-danger"
                           th:text="${likeNotice.unreadCount != 0 ? likeNotice.unreadCount :''}">3</span>
@@ -172,7 +172,7 @@
                 <!-- followNotice(map): message,user,entityType,entityId,postId,totalCount,unreadCount -->
                 <!-- followNotice!=null时才显示 -->
                 <li class="media pb-3 pt-3 mb-3 border-bottom position-relative"
-                    th:if="${followNotice!=null}">
+                    th:if="${followNotice.message!=null}">
                     <!-- 关注类未读通知数量 -->
                     <span class="badge badge-danger"
                           th:text="${followNotice.unreadCount != 0 ? followNotice.unreadCount :''}">3</span>

@@ -176,6 +176,10 @@
                         </div>
                     </div>
                 </li>
+                <span th:if="${!hasConversation}"
+                      th:text="暂时没有朋友私信">
+                    默认显示内容
+                </span>
             </ul>
             <!-- 分页 -->
             <nav class="mt-5" th:replace="index::pagination">

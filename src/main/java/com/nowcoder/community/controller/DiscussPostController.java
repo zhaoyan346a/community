@@ -54,12 +54,7 @@ public class DiscussPostController implements CommunityConstant {
         discussPostService.addDiscussPost(post);
 
         //触发发帖事件
-        Event event = new Event()
-                .setTopic(TOPIC_PUBLISH)//发帖主题
-                .setUserId(user.getId())//登录用户发的帖子
-                .setEntityType(ENTITY_TYPE_POST)//实体类型
-                .setEntityId(post.getId());//实体id
-        eventProducer.fireEvent(event);
+        firePublishEvent(TOPIC_PUBLISH, hostHolder.getUser().getId(), ENTITY_TYPE_POST, post.getId());
 
         //报错的情况，将来统一处理
         return CommunityUtil.getJSONString(0, "发布成功!");
@@ -151,5 +146,46 @@ public class DiscussPostController implements CommunityConstant {
 
         model.addAttribute("comments", commentVoList);
         return "site/discuss-detail";
+    }
+
+    //置顶帖子
+    @RequestMapping(path = "/top", method = RequestMethod.POST)
+    @ResponseBody
+    public String setTop(int postId) {
+        discussPostService.updateType(postId, 1);//1-置顶
+        //触发发帖事件
+        firePublishEvent(TOPIC_PUBLISH, hostHolder.getUser().getId(), ENTITY_TYPE_POST, postId);
+        return CommunityUtil.getJSONString(0);//0表示OK
+    }
+
+    //加精帖子
+    @RequestMapping(path = "/wonderful", method = RequestMethod.POST)
+    @ResponseBody
+    public String setWonderful(int postId) {
+        discussPostService.updateStatus(postId, 1);//1-加精
+        //触发发帖事件
+        firePublishEvent(TOPIC_PUBLISH, hostHolder.getUser().getId(), ENTITY_TYPE_POST, postId);
+        return CommunityUtil.getJSONString(0);//0表示OK
+    }
+
+    //删除帖子
+    @RequestMapping(path = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String setDelete(int postId) {
+        discussPostService.updateType(postId, 2);//2-删除
+        //触发发帖事件
+        firePublishEvent(TOPIC_DELETE, hostHolder.getUser().getId(), ENTITY_TYPE_POST, postId);
+        return CommunityUtil.getJSONString(0);//0表示OK
+    }
+
+    //触发发帖事件
+    private void firePublishEvent(String topic, int userId, int entityType,
+                                  int entityId) {
+        Event event = new Event()
+                .setTopic(topic)
+                .setUserId(userId) //发起人
+                .setEntityType(entityType) //实体类型
+                .setEntityId(entityId); //实体ID
+        eventProducer.fireEvent(event);
     }
 }
