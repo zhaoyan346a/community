@@ -176,7 +176,6 @@ public class MessageController implements CommunityConstant {
             //最新的一条通知
             Message message = messageService.selectLatestNotice(user.getId(), topic);
             Map<String, Object> map = new HashMap<>();
-            map.put("message", null);
             if (message != null) {//存在通知
                 map.put("message", message);//message是通知对象
                 String content = message.getContent();
@@ -192,11 +191,11 @@ public class MessageController implements CommunityConstant {
                 //该类通知未读数
                 int unreadCount = messageService.selectNoticeUnreadCount(user.getId(), topic);
                 map.put("unreadCount", unreadCount);
+                // commentNotice: message,user,entityType,entityId,postId,totalCount,unreadCount
+                // likeNotice: 同上
+                // followNotice: 同上
+                model.addAttribute(topic + "Notice", map);
             }
-            // commentNotice: message,user,entityType,entityId,postId,totalCount,unreadCount
-            // likeNotice: 同上
-            // followNotice: 同上
-            model.addAttribute(topic + "Notice", map);
         }
         // 查询私信未读消息数量
         int letterUnreadCount = messageService.findLetterUnreadCount(user.getId(), null);

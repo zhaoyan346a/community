@@ -96,9 +96,9 @@
             <ul class="list-unstyled">
                 <!-- 评论类通知 -->
                 <!-- commentNotice(map): message,user,entityType,entityId,postId,totalCount,unreadCount -->
-                <!-- message!=null时才显示 -->
+                <!-- commentNotice!=null时才显示 -->
                 <li class="media pb-3 pt-3 mb-3 border-bottom position-relative"
-                    th:if="${commentNotice.message!=null}">
+                    th:if="${commentNotice!=null}">
                     <!-- 评论类未读通知数量 -->
                     <span class="badge badge-danger"
                           th:text="${commentNotice.unreadCount != 0 ? commentNotice.unreadCount :''}">3</span>
@@ -134,9 +134,9 @@
                 </li>
                 <!-- 点赞类通知 -->
                 <!-- likeNotice(map): message,user,entityType,entityId,postId,totalCount,unreadCount -->
-                <!-- message!=null时才显示 -->
+                <!-- likeNotice!=null时才显示 -->
                 <li class="media pb-3 pt-3 mb-3 border-bottom position-relative"
-                    th:if="${likeNotice.message!=null}">
+                    th:if="${likeNotice!=null}">
                     <!-- 点赞类未读通知数量 -->
                     <span class="badge badge-danger"
                           th:text="${likeNotice.unreadCount != 0 ? likeNotice.unreadCount :''}">3</span>
@@ -170,9 +170,9 @@
                 </li>
                 <!-- 关注类通知 -->
                 <!-- followNotice(map): message,user,entityType,entityId,postId,totalCount,unreadCount -->
-                <!-- message!=null时才显示 -->
+                <!-- followNotice!=null时才显示 -->
                 <li class="media pb-3 pt-3 mb-3 border-bottom position-relative"
-                    th:if="${followNotice.message!=null}">
+                    th:if="${followNotice!=null}">
                     <!-- 关注类未读通知数量 -->
                     <span class="badge badge-danger"
                           th:text="${followNotice.unreadCount != 0 ? followNotice.unreadCount :''}">3</span>
