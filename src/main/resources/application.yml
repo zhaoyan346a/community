@@ -116,4 +116,14 @@ community:
     uploadPath: F:/javaweb/projectSpace/images
   #community.path.uploadPath=F:/javaweb/projectSpace/images
 
-
+# wk配置
+# 1、 https://wkhtmltopdf.org/downloads.html 下载安装WK
+# 2、 将bin路径配置到环境变量中
+# 给指定的网页生成 pdf 或者 图片
+# 命令：wkhtmltopdf https://www.baidu.com F:/javaweb/projectSpace/data/wk-pdfs/1.pdf 生成pdf
+# wkhtmltoimage https://www.baidu.com F:/javaweb/projectSpace/data/wk-images/1.png 生成image
+# wkhtmltoimage --quality 75 https://www.baidu.com F:/javaweb/projectSpace/data/wk-images/2.png  压缩到原来的75%
+wk:
+  image:
+    command: F:/javaweb/wkhtmltopdf/bin/wkhtmltoimage # wk生成图片的命令地址
+    storage: F:/javaweb/projectSpace/data/wk-images # wk生成图片的存放地址
