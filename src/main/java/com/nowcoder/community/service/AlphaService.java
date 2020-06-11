@@ -5,8 +5,12 @@ import com.nowcoder.community.dao.DiscussPostMapper;
 import com.nowcoder.community.dao.UserMapper;
 import com.nowcoder.community.entity.DiscussPost;
 import com.nowcoder.community.util.CommunityUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.nowcoder.community.entity.User;
 import org.springframework.transaction.TransactionDefinition;
@@ -23,6 +27,7 @@ import java.util.Date;
 
 @Service
 public class AlphaService {
+    private static final Logger logger = LoggerFactory.getLogger(AlphaService.class);
     @Autowired
     private AlphaDao alphaDao;
     @Autowired
@@ -123,5 +128,17 @@ public class AlphaService {
                 return "ok";
             }
         });
+    }
+
+    //@Async注解让该方法在多线程环境下可以被异步调用,使用Spring内置的线程池
+    @Async
+    public void execute1(){
+        logger.debug("execute1");
+    }
+
+    //@Scheduled注解让该方法可以被Spring内置的定时线程池调用， 延迟10秒，每一秒执行1次 需要@EnableScheduling
+    //@Scheduled(initialDelay = 10000,fixedRate = 1000)
+    public void execute2(){
+        logger.debug("execute2");
     }
 }

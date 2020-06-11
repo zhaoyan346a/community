@@ -63,6 +63,35 @@ spring:
     elasticsearch:
       cluster-name: nowcoder # 集群名字
       cluster-nodes: 127.0.0.1:9300 #集群的节点，多个节点用逗号分隔符。9200是http端口；9300是tcp端口
+  task:
+    # TaskExecutionProperties  Spring线程池配置
+    execution:
+      pool:
+        core-size: 5 # 核心线程数
+        max-size: 15 # 最大线程数
+        queue-capacity: 100 # 队列容量
+    # TaskSchedulingProperties Spring定时线程池配置
+    scheduling:
+      pool:
+        size: 5 # 定时线程池线程个数
+  # QuartzProperties 分布式定时任务Quartz的配置
+  # 数据库中有数据的表：
+  # qrtz_job_details  qrtz_locks  qrtz_scheduler_state  qrtz_simple_triggers  qrtz_triggers  qrtz_fired_triggers
+  quartz:
+    job-store-type: jdbc # job存储类型
+    scheduler-name: communityScheduler # 调度器名字
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceId: AUTO # 调度器实例ID：自动生成
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX # 存储job的类
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate # 存储job的驱动类
+            isClustered: true # 是否为集群
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool # 线程池类
+            threadCount: 5 # 线程数量
 
 # Mybatis
 mybatis:
