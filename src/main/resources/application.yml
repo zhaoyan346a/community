@@ -127,3 +127,11 @@ wk:
   image:
     command: F:/javaweb/wkhtmltopdf/bin/wkhtmltoimage # wk生成图片的命令地址
     storage: F:/javaweb/projectSpace/data/wk-images # wk生成图片的存放地址
+
+# qiniu
+#  qiniu.key.access=6RA-Uus95ZT_1znMrCMD8BpqfjT-K7OKmQTfKB48
+#  qiniu.key.secret=kPNnLFz2_tzztKUVpSLm0lYngtuHWyIq5LzTmLIL
+#  qiniu.bucket.header.name=community_header
+#  quniu.bucket.header.url=http://pvghrij81.bkt.clouddn.com
+#  qiniu.bucket.share.name=community_share
+#  qiniu.bucket.share.url=http://pvghvvuzm.bkt.clouddn.com
