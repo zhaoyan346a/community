@@ -135,3 +135,8 @@ wk:
 #  quniu.bucket.header.url=http://pvghrij81.bkt.clouddn.com
 #  qiniu.bucket.share.name=community_share
 #  qiniu.bucket.share.url=http://pvghvvuzm.bkt.clouddn.com
+
+# actuator的配置 在application.properties中
+# /info	查看应用信息（需要自己在application.properties里头添加信息，比如info.contact.email=easonjim@163.com）
+# /health	查看应用健康指标
+# /beans	查看bean及其关系列表
