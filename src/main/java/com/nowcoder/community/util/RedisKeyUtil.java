@@ -21,6 +21,7 @@ public class RedisKeyUtil {
     private static final String PREFIX_USER = "user";//登录用户的前缀
     private static final String PREFIX_UV = "uv";//unique visit的前缀(ip)
     private static final String PREFIX_DAU = "dau";//daily active user(日活跃用户)的前缀(userId)
+    private static final String PREFIX_POST = "post";//帖子前缀(计算分数)
 
     /*
     某个实体的赞对应的key
@@ -113,5 +114,14 @@ public class RedisKeyUtil {
      */
     public static String getDAUKey(String startDate, String endDate) {
         return PREFIX_DAU + SPLIT + startDate + SPLIT + endDate;
+    }
+
+    /*
+    计算帖子分数的key  set(帖子ID,...)
+    post:score
+    发帖，加精，给帖子评论，给帖子点赞 都会把postId添加到set里，定时去计算帖子分数
+     */
+    public static String getPostScoreKey() {
+        return PREFIX_POST + SPLIT + "score";
     }
 }

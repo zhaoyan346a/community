@@ -10,7 +10,9 @@ import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
+import com.nowcoder.community.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +37,8 @@ public class DiscussPostController implements CommunityConstant {
     private LikeService likeService;
     @Autowired
     private EventProducer eventProducer;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     //添加讨论帖
     @RequestMapping(path = "/add", method = RequestMethod.POST)
@@ -55,6 +59,10 @@ public class DiscussPostController implements CommunityConstant {
 
         //触发发帖事件
         firePublishEvent(TOPIC_PUBLISH, hostHolder.getUser().getId(), ENTITY_TYPE_POST, post.getId());
+
+        //计算帖子分数
+        String postScoreKey = RedisKeyUtil.getPostScoreKey();
+        redisTemplate.opsForSet().add(postScoreKey, post.getId());//把要计算的帖子ID添加到set里
 
         //报错的情况，将来统一处理
         return CommunityUtil.getJSONString(0, "发布成功!");
@@ -165,6 +173,9 @@ public class DiscussPostController implements CommunityConstant {
         discussPostService.updateStatus(postId, 1);//1-加精
         //触发发帖事件
         firePublishEvent(TOPIC_PUBLISH, hostHolder.getUser().getId(), ENTITY_TYPE_POST, postId);
+        //计算帖子分数
+        String postScoreKey = RedisKeyUtil.getPostScoreKey();
+        redisTemplate.opsForSet().add(postScoreKey, postId);//把要计算的帖子ID添加到set里
         return CommunityUtil.getJSONString(0);//0表示OK
     }
 

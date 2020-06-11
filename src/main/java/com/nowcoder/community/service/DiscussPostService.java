@@ -17,9 +17,9 @@ public class DiscussPostService {
     @Autowired
     private SensitiveFilter sensitiveFilter;
 
-    //查询讨论帖
-    public List<DiscussPost> findDiscussPosts(int userId, int offset, int limit) {
-        return discussPostMapper.selectDiscussPosts(userId, offset, limit);
+    //查询讨论帖 orderMode: 0-->最新; 1-->最热
+    public List<DiscussPost> findDiscussPosts(int userId, int offset, int limit, int orderMode) {
+        return discussPostMapper.selectDiscussPosts(userId, offset, limit, orderMode);
     }
 
     //统计某个用户的讨论帖数量
@@ -59,5 +59,10 @@ public class DiscussPostService {
     //更新帖子状态  0-正常; 1-精华; 2-拉黑
     public int updateStatus(int id, int status) {
         return discussPostMapper.updateStatus(id, status);
+    }
+
+    //更新帖子分数
+    public int updateScore(int id, double score) {
+        return discussPostMapper.updateScore(id, score);
     }
 }

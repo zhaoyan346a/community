@@ -11,7 +11,8 @@ public interface DiscussPostMapper {
 
     // userId为0时：查找所有讨论帖
     // offset limit 相当于 limit a , b
-    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit);
+    // orderMode: 0-->最新; 1-->最热
+    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit, int orderMode);
 
     // @Param注解用于给参数取别名,
     // 如果只有一个参数,并且在<if>里使用,则必须加别名.
@@ -32,4 +33,7 @@ public interface DiscussPostMapper {
 
     //更新帖子状态  0-正常; 1-精华; 2-拉黑
     int updateStatus(int id, int status);
+
+    //更新帖子分数
+    int updateScore(int id, double score);
 }

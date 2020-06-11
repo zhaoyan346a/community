@@ -74,7 +74,8 @@
                     <!-- 个人主页 -->
                     <a th:href="@{|/user/profile/${map.user.id}|}">
                         <!-- 作者头像 -->
-                        <img th:src="${map.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像">
+                        <img th:src="${map.user.headerUrl}" style="width: 50px;height: 50px;"
+                             class="mr-4 rounded-circle" alt="用户头像">
                     </a>
                     <div class="media-body">
                         <h6 class="mt-0 mb-3">
