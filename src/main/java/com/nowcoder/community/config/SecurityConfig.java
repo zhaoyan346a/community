@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
     protected void configure(HttpSecurity http) throws Exception {
         //授权
         http.authorizeRequests()
+                //需要登录才能访问的路径
                 .antMatchers(
                         "/user/setting",
                         "/user/upload",
@@ -39,12 +40,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
                         "/notice/**",
                         "/like",
                         "/follow",
-                        "/unfollow") //需要登录才能访问的路径
+                        "/unfollow")
+                //有其中任何一个权限即可
                 .hasAnyAuthority(AUTHORITY_USER,
                         AUTHORITY_ADMIN,
-                        AUTHORITY_MODERATOR) //有其中任何一个权限即可
-                .anyRequest().permitAll() //所有请求都可以访问
-                .and().csrf().disable();//关闭csrf
+                        AUTHORITY_MODERATOR)
+                //版主才有权限做帖子的置顶、加精
+                .antMatchers(
+                        "/discuss/top",
+                        "/discuss/wonderful"
+                )
+                .hasAnyAuthority(
+                        AUTHORITY_MODERATOR
+                )
+                //管理员才有权限做 删除帖子、访问UV和DAU统计数据
+                .antMatchers(
+                        "/discuss/delete",
+                        "/data/**"
+                )
+                .hasAnyAuthority(
+                        AUTHORITY_ADMIN
+                )
+                //所有请求都可以访问
+                .anyRequest().permitAll()
+                //关闭csrf
+                .and().csrf().disable();
 
         //权限不够时的处理
         http.exceptionHandling()

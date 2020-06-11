@@ -1,4 +1,9 @@
 package com.nowcoder.community.util;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /*
 点赞：set
 关注：sorted set
@@ -14,6 +19,8 @@ public class RedisKeyUtil {
     private static final String PREFIX_KAPTCHA = "kaptcha";//验证码的前缀
     private static final String PREFIX_TICKET = "ticket";//登录凭证的前缀
     private static final String PREFIX_USER = "user";//登录用户的前缀
+    private static final String PREFIX_UV = "uv";//unique visit的前缀(ip)
+    private static final String PREFIX_DAU = "dau";//daily active user(日活跃用户)的前缀(userId)
 
     /*
     某个实体的赞对应的key
@@ -74,5 +81,37 @@ public class RedisKeyUtil {
      */
     public static String getUserKey(int userId) {
         return PREFIX_USER + SPLIT + userId;
+    }
+
+    /*
+    单日UV对应的key  统计IP
+    uv:20200101 yyyyMMdd
+     */
+    public static String getUVKey(String date) {
+        return PREFIX_UV + SPLIT + date;
+    }
+
+    /*
+    区间日期UV对应的key  统计IP
+    uv:20200101:20200202 yyyyMMdd
+     */
+    public static String getUVKey(String startDate, String endDate) {
+        return PREFIX_UV + SPLIT + startDate + SPLIT + endDate;
+    }
+
+    /*
+    单日DAU对应的key  统计userId个数
+    dau:20200101  yyyyMMdd
+     */
+    public static String getDAUKey(String date) {
+        return PREFIX_DAU + SPLIT + date;
+    }
+
+    /*
+    区间日期DAU对应的key  统计userId个数
+    dau:20200101:20200202 yyyyMMdd
+     */
+    public static String getDAUKey(String startDate, String endDate) {
+        return PREFIX_DAU + SPLIT + startDate + SPLIT + endDate;
     }
 }

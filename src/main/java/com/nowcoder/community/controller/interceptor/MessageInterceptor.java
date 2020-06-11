@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+//统计未读信息数的拦截器
 @Component
 public class MessageInterceptor implements HandlerInterceptor {
     @Autowired
