@@ -140,3 +140,9 @@ wk:
 # /info	查看应用信息（需要自己在application.properties里头添加信息，比如info.contact.email=easonjim@163.com）
 # /health	查看应用健康指标
 # /beans	查看bean及其关系列表
+
+# 本地缓存caffeine的配置
+caffeine:
+  posts: # 缓存帖子
+    max-size: 15 # 缓存15个数据
+    expire-seconds: 180 # 缓存过期时间180秒
